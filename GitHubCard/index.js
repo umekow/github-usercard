@@ -3,40 +3,7 @@
            https://api.github.com/users/<your name>
 */
 
-//create card to append to 
 
-const cards = document.querySelector('.cards');
-
-//create a card for my github user account
-
-axios.get('https://api.github.com/users/umekow').then(response =>{
-  //create a card then attach it to cards div
-  cards.prepend(createUserCard(response)); 
-
-});
-
-//get list of my github followers
-axios.get("https://api.github.com/users/umekow/followers ").then(response => {
-  
-  //store all followers in an array
-  const followersArray = response.data; 
-  
-  //for each follower get their api github url
-  followersArray.forEach(item => {
-    axios.get(item.url).then(r =>{
-      //create a card for current follower then append to cards div
-       cards.appendChild(createUserCard(r));
-    })
-    
-    
-   
-    
-  });
- /* const newCard = createUserCard(response); 
-  const cards = document.querySelector('.cards'); 
-  cards.appendChild(newCard);*/
-  
-});
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -89,6 +56,7 @@ axios.get("https://api.github.com/users/umekow/followers ").then(response => {
   bigknell
 */
 
+//creates a card by using data from passed in user object
 const createUserCard = (user) => {
   //create all elements that make up card
   const card = document.createElement('div');
@@ -113,8 +81,9 @@ const createUserCard = (user) => {
   username.classList.add('username'); 
  
   //content from github object
+  //each url will return a data object with properties (such as name:)
   name.textContent = user.data.name; 
-  username.textContent = user.data.login; 
+  username.textContent = user.data.login;
   image.src = user.data.avatar_url; 
   profile.textContent = user.data.html_url; 
   location.textContent = user.data.location; 
@@ -125,3 +94,29 @@ const createUserCard = (user) => {
   return card; 
 }
 
+//create card to append to 
+const cards = document.querySelector('.cards');
+
+//create a card for my github user account
+axios.get('https://api.github.com/users/umekow').then(response =>{
+  //create a card then attach it to cards div
+  cards.prepend(createUserCard(response)); 
+
+});
+
+//get list of my github followers
+axios.get("https://api.github.com/users/umekow/followers ").then(response => {
+  
+  //store all followers in an array
+  const followersArray = response.data; 
+  
+  //for each follower get api github url
+  followersArray.forEach(item => {
+    axios.get(item.url).then(r =>{
+      //create a card for current follower then append to cards div
+       cards.appendChild(createUserCard(r));
+    });//end of then block for followersArray
+
+  });//end of forEachloop
+
+});//end of then block for followers url
