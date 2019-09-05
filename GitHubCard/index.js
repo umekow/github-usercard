@@ -3,6 +3,11 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get(" https://api.github.com/users/umekow").then(response => {
+  console.log(response); 
+  
+});
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -52,4 +57,75 @@ const followersArray = [];
   justsml
   luishrd
   bigknell
+*/
+
+const createUserCard = (user) => {
+  //create all elements that make up card
+  const card = document.createElement('div');
+  const image = document.createElement('img'); 
+  const info = document.createElement('div'); 
+  const name = document.createElement('h3'); 
+  //all p elements 
+  const username = document.createElement('p'), profile = document.createElement('p'), location = document.createElement('p'), followers = document.createElement('p'), following = document.createElement('p'), bio = document.createElement('p'); 
+
+  //append the image and info card to card div
+  card.appendChild(image);
+  card.appendChild(info);
+
+  //all elements that are a child of info div
+  info.appendChild(name); 
+  info.append(username, profile, location, followers, following, bio); 
+  
+  //assign class names to elements
+  card.classList.add('card'); 
+  info.classList.add('card-info'); 
+  name.classList.add('name'); 
+  username.classList.add('username'); 
+ 
+  //content from github object
+  name.textContent = user.data.name; 
+  username.textContent = user.data.login; 
+  image.src = user.data.avatar_url; 
+  profile.textContent = user.data.avatar_url; 
+  location.textContent = user.data.location; 
+  followers.textContent = user.data.followers; 
+  following.textContent = user.data.following; 
+  bio.textContent = user.data.bio; 
+  
+  return card; 
+}
+
+/*
+avatar_url: "https://avatars2.githubusercontent.com/u/21162641?v=4"
+bio: "Currently a student at Lambda School"
+blog: ""
+company: null
+created_at: "2016-08-21T23:04:18Z"
+email: null
+events_url: "https://api.github.com/users/umekow/events{/privacy}"
+followers: 39
+followers_url: "https://api.github.com/users/umekow/followers"
+following: 62
+following_url: "https://api.github.com/users/umekow/following{/other_user}"
+gists_url: "https://api.github.com/users/umekow/gists{/gist_id}"
+gravatar_id: ""
+hireable: null
+html_url: "https://github.com/umekow"
+id: 21162641
+location: "Jackson, MS"
+login: "umekow"
+name: "Umeko Walker"
+node_id: "MDQ6VXNlcjIxMTYyNjQx"
+organizations_url: "https://api.github.com/users/umekow/orgs"
+public_gists: 0
+public_repos: 26
+received_events_url: "https://api.github.com/users/umekow/received_events"
+repos_url: "https://api.github.com/users/umekow/repos"
+site_admin: false
+starred_url: "https://api.github.com/users/umekow/starred{/owner}{/repo}"
+subscriptions_url: "https://api.github.com/users/umekow/subscriptions"
+type: "User"
+updated_at: "2019-09-03T23:25:38Z"
+url: "https://api.github.com/users/umekow"
+
 */
