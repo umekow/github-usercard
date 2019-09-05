@@ -4,7 +4,9 @@
 */
 
 axios.get(" https://api.github.com/users/umekow").then(response => {
-  console.log(response); 
+  const newCard = createUserCard(response); 
+  const cards = document.querySelector('.cards'); 
+  cards.appendChild(newCard);
   
 });
 
@@ -74,7 +76,7 @@ const createUserCard = (user) => {
 
   //all elements that are a child of info div
   info.appendChild(name); 
-  info.append(username, profile, location, followers, following, bio); 
+  info.append(username, location, profile, followers, following, bio); 
   
   //assign class names to elements
   card.classList.add('card'); 
@@ -86,7 +88,7 @@ const createUserCard = (user) => {
   name.textContent = user.data.name; 
   username.textContent = user.data.login; 
   image.src = user.data.avatar_url; 
-  profile.textContent = user.data.avatar_url; 
+  profile.textContent = user.data.html_url; 
   location.textContent = user.data.location; 
   followers.textContent = user.data.followers; 
   following.textContent = user.data.following; 
