@@ -3,12 +3,33 @@
            https://api.github.com/users/<your name>
 */
 
+//create card to append to 
+
+const cards = document.querySelector('.cards');
+
+//create a card for my github user account
+
+axios.get('https://api.github.com/users/umekow').then(response =>{
+  //create a card then attach it to cards div
+  cards.prepend(createUserCard(response)); 
+
+});
+
+//get list of my github followers
 axios.get("https://api.github.com/users/umekow/followers ").then(response => {
-  const cards = document.querySelector('.cards');
+  
+  //store all followers in an array
   const followersArray = response.data; 
-  console.log(followersArray);
+  
+  //for each follower get their api github url
   followersArray.forEach(item => {
-    cards.appendChild(createUserCard(item));
+    axios.get(item.url).then(r =>{
+      //create a card for current follower then append to cards div
+       cards.appendChild(createUserCard(r));
+    })
+    
+    
+   
     
   });
  /* const newCard = createUserCard(response); 
@@ -92,49 +113,15 @@ const createUserCard = (user) => {
   username.classList.add('username'); 
  
   //content from github object
-  name.textContent = user.name; 
-  username.textContent = user.login; 
-  image.src = user.avatar_url; 
-  profile.textContent = user.html_url; 
-  location.textContent = user.location; 
-  followers.textContent = user.followers; 
-  following.textContent = user.following; 
-  bio.textContent = user.bio; 
+  name.textContent = user.data.name; 
+  username.textContent = user.data.login; 
+  image.src = user.data.avatar_url; 
+  profile.textContent = user.data.html_url; 
+  location.textContent = user.data.location; 
+  followers.textContent = `Followers: ${user.data.followers}`; 
+  following.textContent = `Following: ${user.data.following}`; 
+  bio.textContent = user.data.bio; 
   
   return card; 
 }
 
-/*
-avatar_url: "https://avatars2.githubusercontent.com/u/21162641?v=4"
-bio: "Currently a student at Lambda School"
-blog: ""
-company: null
-created_at: "2016-08-21T23:04:18Z"
-email: null
-events_url: "https://api.github.com/users/umekow/events{/privacy}"
-followers: 39
-followers_url: "https://api.github.com/users/umekow/followers"
-following: 62
-following_url: "https://api.github.com/users/umekow/following{/other_user}"
-gists_url: "https://api.github.com/users/umekow/gists{/gist_id}"
-gravatar_id: ""
-hireable: null
-html_url: "https://github.com/umekow"
-id: 21162641
-location: "Jackson, MS"
-login: "umekow"
-name: "Umeko Walker"
-node_id: "MDQ6VXNlcjIxMTYyNjQx"
-organizations_url: "https://api.github.com/users/umekow/orgs"
-public_gists: 0
-public_repos: 26
-received_events_url: "https://api.github.com/users/umekow/received_events"
-repos_url: "https://api.github.com/users/umekow/repos"
-site_admin: false
-starred_url: "https://api.github.com/users/umekow/starred{/owner}{/repo}"
-subscriptions_url: "https://api.github.com/users/umekow/subscriptions"
-type: "User"
-updated_at: "2019-09-03T23:25:38Z"
-url: "https://api.github.com/users/umekow"
-
-*/
